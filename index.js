@@ -1,7 +1,9 @@
 const express = require('express')
-const Libros = require('./Modelo/Libros')
+const Libros = require('./Modelo/Libros.js')
 
-const cors = require('cors')
+const cors = require('cors');
+const Alquiler = require('./Modelo/Alquiler.js');
+const Espera = require('./Modelo/Espera.js');
 const app = express()
 
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -51,9 +53,6 @@ app.put('/libro/:id', async (req, res) =>{
         res.status(400).json({mensaje: 'No se pudo actualizar el Libro'}); 
 
        }
-
-        
-
     }catch (error) {
         res.status(500).json({error: 'Ocurrio un error' + error});
 
@@ -85,8 +84,65 @@ app.put('/libro-espera/:id', async (req, res) =>{
     }
 })
 
+//servicio para obtener datos de la tabla alquiler
+app.get('/alquiler', async (req, res) =>{
+    try {
 
-    app.delete('/libro/:id', async (req, res) =>{
+        const alquileres= await Alquiler.findAll()
+
+        res.status(200).json(alquileres);
+
+    }catch (error) {
+        res.status(500).json({error: 'Ocurrio un error'});
+
+    }
+})
+
+//servicio para postear datos en la tabla de Alquiler
+
+app.post('/alquiler-post', async (req, res) =>{
+    try {
+
+       const alquiler = await Alquiler.create(req.body)
+
+        res.status(200).json(alquiler);
+
+    }catch (error) {
+        res.status(500).json({error: 'Ocurrio un error'});
+
+    }
+})
+//Api que trae los datos de la tabla espera
+app.get('/espera', async (req, res) =>{
+    try {
+
+        const esperas= await Espera.findAll()
+
+        res.status(200).json(esperas);
+
+    }catch (error) {
+        res.status(500).json({error: 'Ocurrio un error'});
+
+    }
+})
+
+//servicio para postear datos en la tabla de Espera
+
+app.post('/espera-post', async (req, res) =>{
+    try {
+
+       const espera = await Espera.create(req.body)
+
+        res.status(200).json(espera);
+
+    }catch (error) {
+        res.status(500).json({error: 'Ocurrio un error'});
+
+    }
+})
+
+
+app.delete('/libro/:id', async (req, res) =>{
         try {
     
             

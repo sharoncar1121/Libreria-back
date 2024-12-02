@@ -33,6 +33,7 @@ app.post('/libros-post', async (req, res) =>{
     }
 })
 
+//servicio para alquilar 
 app.put('/libro/:id', async (req, res) =>{
     try {
 
@@ -58,6 +59,32 @@ app.put('/libro/:id', async (req, res) =>{
 
     }
 })
+
+//servicio para habilitar espera del libro
+app.put('/libro-espera/:id', async (req, res) =>{
+    try {
+
+        const espera = req.body.espera;
+        const [update] = await Libros.update(
+            { Espera: espera}, 
+            { where: { Id_libro: req.params.id } }
+        );
+       
+       if (update) {
+        res.status(200).json({mensaje: 'Se actualizo el libro a modo espera'}); 
+
+       }
+       else {
+        res.status(400).json({mensaje: 'No se pudo poner el libro en modo espera'}); 
+
+       }
+
+    }catch (error) {
+        res.status(500).json({error: 'Ocurrio un error' + error});
+
+    }
+})
+
 
     app.delete('/libro/:id', async (req, res) =>{
         try {

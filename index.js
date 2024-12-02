@@ -36,11 +36,11 @@ app.post('/libros-post', async (req, res) =>{
 app.put('/libro/:id', async (req, res) =>{
     try {
 
-        
-       const [update] = await Libros.update(req.body, {
-        where: {Id_libro: req.params.id}
-
-       })
+        const estado = req.body.estado;
+        const [update] = await Libros.update(
+            { Estado: estado}, 
+            { where: { Id_libro: req.params.id } }
+        );
        
        if (update) {
         res.status(200).json({mensaje: 'Se actualizo el libro'}); 

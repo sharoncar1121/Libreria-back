@@ -23,6 +23,10 @@ const Alquiler = sequelize.define('Alquiler', {
     Id_libro:{
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    Fecha_entrego: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
   
 },

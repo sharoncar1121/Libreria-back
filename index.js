@@ -9,6 +9,19 @@ const app = express()
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json())
 
+function filtrarLibros(palabra, libros) {
+    let LibrosFiltrados = [];
+    libros.forEach((libro) => {
+      const nombreLBD = libro.Nombre_libro.toLowerCase();
+      const contiene = nombreLBD.includes(palabra.toLowerCase());
+      if (contiene) {
+        LibrosFiltrados = [...LibrosFiltrados, libro];
+      }
+    });
+    return LibrosFiltrados;
+  }
+
+
 app.get('/libros', async (req, res) =>{
     try {
 
@@ -21,6 +34,27 @@ app.get('/libros', async (req, res) =>{
 
     }
 })
+
+app.get('/libros/:Nombre_Libro', async (req, res) => {
+    try {
+    
+      const libros = await Libros.findAll();
+  
+      const arregloBusqueda = req.params.Nombre_Libro.split(' ');
+  
+      
+      let resultado = libros;
+      arregloBusqueda.forEach((palabra) => {
+        resultado = filtrarLibros(palabra, resultado);
+      });
+  
+     
+      res.status(200).json(resultado);
+    } catch (error) {
+      res.status(500).json({ error: 'Ocurrió un error: ' + error });
+    }
+  });
+  
 
 app.post('/libros-post', async (req, res) =>{
     try {

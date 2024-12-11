@@ -3,7 +3,7 @@ const {Sequelize} = require('sequelize');
 const sequelize= new Sequelize(
 'biblioteca',
 'root',
-'paramore1.',
+'Test123&24/',
     {
         host: process.env.DB_HOST,
         port:  process.env.DB_PORT,
